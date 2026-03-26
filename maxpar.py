@@ -37,6 +37,8 @@ def _get_tous_les_ancetres(self, nomTache):
     return list(tous_les_ancetres)
 
 def getDependencies(self, nomTache):
+    if nomTache not in self.tasks:
+        raise ValueError(f"Erreur : la tâche '{nomTache}' n'existe pas dans le système.")
 
     dependances_maximales = []
     tache_cible = self.tasks[nomTache]
