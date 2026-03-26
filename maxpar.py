@@ -11,3 +11,12 @@ def interfere(t1, t2):
     cond_3 = bool(w1 & w2)
 
     return cond_1 or cond_2 or cond_3
+
+class TaskSystem:
+    def __init__(self, liste_taches, dict_precedence):
+
+        self.precedence = dict_precedence
+
+        self.tasks = {}
+        for t in liste_taches:
+            self.tasks[t.name] = t
