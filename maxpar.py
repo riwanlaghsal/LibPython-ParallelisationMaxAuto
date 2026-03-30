@@ -1,3 +1,5 @@
+import threading
+
 def interfere(t1, t2):
 
     r1 = set(t1.reads)
@@ -11,15 +13,6 @@ def interfere(t1, t2):
     cond_3 = bool(w1 & w2)
 
     return cond_1 or cond_2 or cond_3
-
-class TaskSystem:
-    def __init__(self, liste_taches, dict_precedence):
-
-        self.precedence = dict_precedence
-
-        self.tasks = {}
-        for t in liste_taches:
-            self.tasks[t.name] = t
 
 def _get_tous_les_ancetres(self, nomTache):
     tous_les_ancetres = set()
@@ -51,3 +44,33 @@ def getDependencies(self, nomTache):
             dependances_maximales.append(nom_ancetre)
 
     return dependances_maximales
+
+def run(self):
+        taches_restantes = set(self.tasks.keys())
+
+        taches_terminees = set()
+
+        while taches_restantes:
+            taches_pretes = []
+
+            for nom_tache in taches_restantes:
+                dependances = self.getDependencies(nomTache=nom_tache)
+                if all(dep in taches_terminees for dep in dependances):
+                    taches_pretes.append(nom_tache)
+
+            if not taches_pretes:
+                raise RuntimeError("Erreur : Interblocage (cycle) détecté. Exécution impossible.")
+
+            threads = []
+            for nom_tache in taches_pretes:
+                tache_obj = self.tasks[nom_tache]
+                t = threading.Thread(target=tache_obj.run)
+                threads.append(t)
+                t.start()
+
+            for t in threads:
+                t.join()
+
+            for nom_tache in taches_pretes:
+                taches_terminees.add(nom_tache)
+                taches_restantes.remove(nom_tache)
