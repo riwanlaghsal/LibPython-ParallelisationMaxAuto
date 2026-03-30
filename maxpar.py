@@ -6,7 +6,7 @@ def interfere(t1, t2):
     w1 = set(t1.writes)
 
     r2 = set(t2.reads)
-    w2 = set(t2.reads)
+    w2 = set(t2.writes)
 
     cond_1 = bool(r1 & w2)
     cond_2 = bool(r2 & w1)
